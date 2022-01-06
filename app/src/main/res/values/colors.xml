@@ -12,4 +12,9 @@
     <color name="orange">#ff5d0d</color>
     <color name="blue">#0daaff</color>
     <color name="dark_white">#d9d9d9</color>
+    <color name="red">#f01313</color>
+    <color name="green">#0fd948</color>
+    <color name="yellow">#e2e610</color>
+    <color name="purple">#b922e3</color>
+
 </resources>
