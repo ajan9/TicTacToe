@@ -3,8 +3,6 @@ package com.example.tictactoe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,11 +18,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private int roundCount = 0;
 
     static int color1ID, color2ID;
-    static boolean flag = false;
 
     private String player1Color = "", player2Color = "";
-    private String defaultColor = "gray";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +44,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         player2Color = (String) i.getSerializableExtra("Player2");
         playerColor(player1Color, player2Color);
 
-        Button blue = findViewById(R.id.blue);
-        Button orange = findViewById(R.id.orange);
-        Button red = findViewById(R.id.red);
-        Button green = findViewById(R.id.green);
-        Button yellow = findViewById(R.id.yellow);
-        Button purple = findViewById(R.id.purple);
     }
 
     private void playerColor(String player1Color, String player2Color){

@@ -8,91 +8,59 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final AppCompatActivity activity = MainActivity.this;
 
     private boolean flag1Player = false;
     private boolean flag2Player = false;
     private static int click = 0;
-    private static String color = "";
-    private String player1Color = "", player2Color = "";
+    private String player1Color, player2Color;
+    String color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button blue = findViewById(R.id.blue);
-        Button orange = findViewById(R.id.orange);
-        Button red = findViewById(R.id.red);
-        Button green = findViewById(R.id.green);
-        Button yellow = findViewById(R.id.yellow);
-        Button purple = findViewById(R.id.purple);
+        Button blue = findViewById(R.id.blue); blue.setOnClickListener(this);
+        Button orange = findViewById(R.id.orange); orange.setOnClickListener(this);
+        Button red = findViewById(R.id.red); red.setOnClickListener(this);
+        Button green = findViewById(R.id.green); green.setOnClickListener(this);
+        Button yellow = findViewById(R.id.yellow); yellow.setOnClickListener(this);
+        Button purple = findViewById(R.id.purple); purple.setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View view) {
 
-        blue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getBackground().setAlpha(64);
-                view.setEnabled(false);
-                click++;
+        Button b = (Button)view;
+        switch (b.getId()){
+            case R.id.blue:
                 color = "blue";
-                checkPlayer(color);
-            }
-        });
-        orange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getBackground().setAlpha(64);
-                view.setEnabled(false);
+                break;
+            case R.id.orange:
                 color = "orange";
-                click++;
-                checkPlayer(color);
-            }
-        });
-        red.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getBackground().setAlpha(64);
-                view.setEnabled(false);
+                break;
+            case R.id.red:
                 color = "red";
-                click++;
-                checkPlayer(color);
-
-            }
-        });
-        green.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getBackground().setAlpha(64);
-                view.setEnabled(false);
-                click++;
+                break;
+            case R.id.green:
                 color = "green";
-                checkPlayer(color);
-            }
-        });
-        yellow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getBackground().setAlpha(64);
-                view.setEnabled(false);
-                click++;
+                break;
+            case R.id.yellow:
                 color = "yellow";
-                checkPlayer(color);
-            }
-        });
-        purple.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.getBackground().setAlpha(64);
-                view.setEnabled(false);
-                click++;
+                break;
+            case R.id.purple:
                 color = "purple";
-                checkPlayer(color);
-            }
-        });
+                break;
+        }
 
+        view.setBackground(getDrawable(R.drawable.gray_btn));
+        view.getBackground().setAlpha(64);
+        view.setEnabled(false);
+        click++;
+        checkPlayer(color);
     }
 
     private void checkPlayer(String color){
@@ -104,7 +72,7 @@ public class MainActivity extends AppCompatActivity{
             player2Color = color;
         }
 
-        if(flag1Player && flag2Player){
+        if(flag1Player && flag2Player) {
             Intent i = new Intent(activity, StartActivity.class);
             startActivity(i);
 
@@ -116,11 +84,4 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
-
-
-
-
-
 }
-
-
