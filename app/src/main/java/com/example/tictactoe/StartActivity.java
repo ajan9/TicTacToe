@@ -3,23 +3,17 @@ package com.example.tictactoe;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button[][] buttons = new Button[3][3];
     private boolean player1Turn = true;
-    private int roundCount;
-    private int player1Points;
-    private int player2Points;
-
-    private TextView player1;
-    private TextView player2;
-    private Button reset;
+    private int roundCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +25,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public void initListeners(){
 
-        player1 = findViewById(R.id.player1);
-        player2 = findViewById(R.id.player2);
-        reset = findViewById(R.id.reset);
-
         for (int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 String buttonID = "button" + i + j;
@@ -43,31 +33,21 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 buttons[i][j].setOnClickListener(this);
             }
         }
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetGame();
-            }
-        });
-
     }
 
     @Override
     public void onClick(View v) {
-
-        // Ako je prazan
         if(!((Button)v).getText().toString().equals("")){
             return;
         }
 
         if(player1Turn){
+            ((Button)v).setBackground(getDrawable(R.drawable.blue_btn));
             ((Button)v).setText("X");
         }else{
+            ((Button)v).setBackground(getDrawable(R.drawable.orange_btn));
             ((Button)v).setText("O");
         }
-
-        roundCount++;
 
         if(checkForWin()){
             if(player1Turn){
@@ -96,7 +76,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         for(int i = 0; i < 3; i++){
             if(array[i][0].equals(array[i][1]) && array[i][0].equals(array[i][2])
-            && !array[i][0].equals("")){
+                    && !array[i][0].equals("")){
                 return true;
             }
         }
@@ -121,15 +101,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void player1Wins(){
-        player1Points++;
-        Toast.makeText(this,"Player 1 wins!", Toast.LENGTH_SHORT).show();
-        updatePointsText();
+        Toast.makeText(this,"Player 1 wins!", Toast.LENGTH_LONG).show();
         resetBoard();
     }
     private void player2Wins(){
-        player2Points++;
-        Toast.makeText(this,"Player 2 wins!", Toast.LENGTH_SHORT).show();
-        updatePointsText();
+        Toast.makeText(this,"Player 2 wins!", Toast.LENGTH_LONG).show();
         resetBoard();
     }
 
@@ -138,26 +114,16 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         resetBoard();
     }
 
-    private void updatePointsText(){
-        player1.setText("Player 1: " + player1Points);
-        player2.setText("Player 2: " + player2Points);
-    }
 
     private void resetBoard(){
         for(int i = 0; i < 3; i ++){
             for(int j = 0; j < 3; j++){
                 buttons[i][j].setText("");
+                buttons[i][j].setBackground(getDrawable(R.drawable.gray_btn));
             }
         }
-        roundCount = 0;
         player1Turn = true;
     }
 
-    public void resetGame(){
-        player1Points = 0;
-        player2Points = 0;
-        updatePointsText();
-        resetBoard();
-    }
 
 }

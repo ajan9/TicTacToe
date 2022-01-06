@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Andrea/AndroidStudioProjects/TicTacToe/app/src/main/res/layout/activity_main.xml" value="0.259375" />
-        <entry key="..\:/Users/Korisnik/AndroidStudioProjects/TicTacToe/app/src/main/res/layout/activity_main.xml" value="0.15" />
-        <entry key="..\:/Users/Korisnik/AndroidStudioProjects/TicTacToe/app/src/main/res/layout/activity_start.xml" value="0.22" />
+        <entry key="..\:/Users/Andrea/StudioProjects/TicTacToe/app/src/main/res/drawable/blue_btn.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Andrea/StudioProjects/TicTacToe/app/src/main/res/drawable/gray_btn.xml" value="1.8892857142857142" />
+        <entry key="..\:/Users/Andrea/StudioProjects/TicTacToe/app/src/main/res/drawable/orange_btn.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Andrea/StudioProjects/TicTacToe/app/src/main/res/drawable/yellow_btn.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/Andrea/StudioProjects/TicTacToe/app/src/main/res/layout/activity_main.xml" value="0.259375" />
+        <entry key="..\:/Users/Andrea/StudioProjects/TicTacToe/app/src/main/res/layout/activity_start.xml" value="0.259375" />
       </map>
     </option>
   </component>
