@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity{
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.gray_btn));
+                view.getBackground().setAlpha(64);
                 view.setEnabled(false);
                 click++;
                 color = "blue";
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
         orange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.gray_btn));
+                view.getBackground().setAlpha(64);
                 view.setEnabled(false);
                 color = "orange";
                 click++;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity{
         red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.red_btn));
+                view.getBackground().setAlpha(64);
                 view.setEnabled(false);
                 color = "red";
                 click++;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity{
         green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.gray_btn));
+                view.getBackground().setAlpha(64);
                 view.setEnabled(false);
                 click++;
                 color = "green";
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
         yellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.gray_btn));
+                view.getBackground().setAlpha(64);
                 view.setEnabled(false);
                 click++;
                 color = "yellow";
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity{
         purple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.gray_btn));
+                view.getBackground().setAlpha(64);
                 view.setEnabled(false);
                 click++;
                 color = "purple";
