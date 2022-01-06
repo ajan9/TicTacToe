@@ -166,6 +166,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private void draw(){
         Toast.makeText(this,"Draw!", Toast.LENGTH_SHORT).show();
+        for(int i = 0; i < 3; i ++){
+            for(int j = 0; j < 3; j++){
+                buttons[i][j].setBackground(getDrawable(R.drawable.gray_btn));
+            }
+        }
         resetBoard();
     }
 
@@ -185,8 +190,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFinish() {
-                for (int i = 0; i < MAX_LENGTH; i++) {
-                    for (int j = 0; j < MAX_LENGTH; j++) {
+                for(int i = 0; i < 3; i ++){
+                    for(int j = 0; j < 3; j++){
                         buttons[i][j].setBackground(getDrawable(R.drawable.gray_btn));
                     }
                 }
@@ -196,6 +201,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void resetBoard(){
+        for(int i = 0; i < 3; i ++){
+            for(int j = 0; j < 3; j++){
+                buttons[i][j].setText("");
+            }
+        }
         roundCount = 0;
         player1Turn = !player1Turn;
     }
