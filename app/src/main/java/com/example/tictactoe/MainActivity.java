@@ -12,6 +12,12 @@ public class MainActivity extends AppCompatActivity{
 
     private final AppCompatActivity activity = MainActivity.this;
 
+    private boolean flag1Player = false;
+    private boolean flag2Player = false;
+    private static int click = 0;
+    private static String color = "";
+    private String player1Color = "", player2Color = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,12 +30,15 @@ public class MainActivity extends AppCompatActivity{
         Button yellow = findViewById(R.id.yellow);
         Button purple = findViewById(R.id.purple);
 
+
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(activity, StartActivity.class);
-                startActivity(i);
-
+                view.setBackground(getDrawable(R.drawable.gray_btn));
+                view.setEnabled(false);
+                click++;
+                color = "blue";
+                checkPlayer(color);
             }
         });
         orange.setOnClickListener(new View.OnClickListener() {
@@ -37,28 +46,20 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 view.setBackground(getDrawable(R.drawable.gray_btn));
                 view.setEnabled(false);
+                color = "orange";
+                click++;
+                checkPlayer(color);
             }
         });
         red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackground(getDrawable(R.drawable.gray_btn));
-                new CountDownTimer(2000, 50) {
-
-                    @Override
-                    public void onTick(long arg0) {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        view.setBackground(getDrawable(R.drawable.red_btn));
-                    }
-                }.start();
-
-
+                view.setBackground(getDrawable(R.drawable.red_btn));
                 view.setEnabled(false);
+                color = "red";
+                click++;
+                checkPlayer(color);
+
             }
         });
         green.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 view.setBackground(getDrawable(R.drawable.gray_btn));
                 view.setEnabled(false);
+                click++;
+                color = "green";
+                checkPlayer(color);
             }
         });
         yellow.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 view.setBackground(getDrawable(R.drawable.gray_btn));
                 view.setEnabled(false);
+                click++;
+                color = "yellow";
+                checkPlayer(color);
             }
         });
         purple.setOnClickListener(new View.OnClickListener() {
@@ -80,11 +87,37 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 view.setBackground(getDrawable(R.drawable.gray_btn));
                 view.setEnabled(false);
+                click++;
+                color = "purple";
+                checkPlayer(color);
             }
         });
 
+    }
+
+    private void checkPlayer(String color){
+        if(click == 1){
+            flag1Player = true;
+            player1Color = color;
+        }else{
+            flag2Player = true;
+            player2Color = color;
+        }
+
+        if(flag1Player && flag2Player){
+            Intent i = new Intent(activity, StartActivity.class);
+            startActivity(i);
+
+            Intent i2 = new Intent(this, StartActivity.class);
+            i2.putExtra("Player1", player1Color);
+            i2.putExtra("Player2", player2Color);
+            startActivity(i2);
+            finish();
+        }
 
     }
+
+
 
 
 

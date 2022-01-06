@@ -11,12 +11,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,13 +22,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     static int color1ID, color2ID;
     static boolean flag = false;
 
-    /*Kasnije promijeniti*/
-    private String player1Color = "blue";
-    private String player2Color = "orange";
+    private String player1Color = "", player2Color = "";
     private String defaultColor = "gray";
 
-    private CountDownTimer timer;
-    private static Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +44,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 buttons[i][j].setOnClickListener(this);
             }
         }
+        Intent i  = getIntent();
+        player1Color = (String) i.getSerializableExtra("Player1");
+        player2Color = (String) i.getSerializableExtra("Player2");
         playerColor(player1Color, player2Color);
+
+        Button blue = findViewById(R.id.blue);
+        Button orange = findViewById(R.id.orange);
+        Button red = findViewById(R.id.red);
+        Button green = findViewById(R.id.green);
+        Button yellow = findViewById(R.id.yellow);
+        Button purple = findViewById(R.id.purple);
     }
 
     private void playerColor(String player1Color, String player2Color){
@@ -65,8 +65,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             case "orange":
                 color1ID = R.drawable.orange_btn;
                 break;
-            case "gray":
-                color1ID = R.drawable.gray_btn;
+            case "red":
+                color1ID = R.drawable.red_btn;
+            break;
+            case "green":
+                color1ID = R.drawable.green_btn;
+            break;
+            case "yellow":
+                color1ID = R.drawable.yellow_btn;
+            break;
+            case "purple":
+                color1ID = R.drawable.purple_btn;
             break;
         }
 
@@ -77,8 +86,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             case "orange":
                 color2ID = R.drawable.orange_btn;
                 break;
-            case "gray":
-                color2ID = R.drawable.gray_btn;
+            case "red":
+                color2ID = R.drawable.red_btn;
+                break;
+            case "green":
+                color2ID = R.drawable.green_btn;
+                break;
+            case "yellow":
+                color2ID = R.drawable.yellow_btn;
+                break;
+            case "purple":
+                color2ID = R.drawable.purple_btn;
                 break;
         }
 
