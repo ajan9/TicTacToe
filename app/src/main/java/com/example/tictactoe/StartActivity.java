@@ -12,13 +12,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
-    int MAX_LENGTH = 3;
-    private Button[][] buttons = new Button[MAX_LENGTH][MAX_LENGTH];
+    private final AppCompatActivity activity = StartActivity.this;
+
+    private Button[][] buttons = new Button[3][3];
+
     private boolean player1Turn = true;
-    private int roundCount = 0;
+
+    private int roundCount;
+
+    private int player1Points;
+    private int player2Points;
 
     static int color1ID, color2ID;
-
     private String player1Color = "", player2Color = "";
 
     @Override
@@ -27,22 +32,23 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_start);
 
         initListeners();
+
+        Intent i  = getIntent();
+        player1Color = (String) i.getSerializableExtra("Player1");
+        player2Color = (String) i.getSerializableExtra("Player2");
+        playerColor(player1Color, player2Color);
+
     }
 
-    public void initListeners(){
-
-        for (int i = 0; i < MAX_LENGTH; i++){
-            for(int j = 0; j < MAX_LENGTH; j++){
+    private void initListeners(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 String buttonID = "button" + i + j;
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 buttons[i][j] = findViewById(resID);
                 buttons[i][j].setOnClickListener(this);
             }
         }
-        Intent i  = getIntent();
-        player1Color = (String) i.getSerializableExtra("Player1");
-        player2Color = (String) i.getSerializableExtra("Player2");
-        playerColor(player1Color, player2Color);
 
     }
 
@@ -56,16 +62,16 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case "red":
                 color1ID = R.drawable.red_btn;
-            break;
+                break;
             case "green":
                 color1ID = R.drawable.green_btn;
-            break;
+                break;
             case "yellow":
                 color1ID = R.drawable.yellow_btn;
-            break;
+                break;
             case "purple":
                 color1ID = R.drawable.purple_btn;
-            break;
+                break;
         }
 
         switch (player2Color){
@@ -91,88 +97,94 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
+
     @Override
     public void onClick(View v) {
-
-        playerColor(player1Color, player2Color);
-
-        if(!((Button)v).getText().toString().equals("")){
+        if (!((Button) v).getText().toString().equals("")) {
             return;
         }
 
-        if(player1Turn){
+        if (player1Turn) {
+            ((Button) v).setText("X");
             ((Button)v).setBackground(getDrawable(color1ID));
-            ((Button)v).setText("X");
-        }else{
+        } else {
+            ((Button) v).setText("O");
             ((Button)v).setBackground(getDrawable(color2ID));
-            ((Button)v).setText("O");
         }
 
         roundCount++;
 
-        if(checkForWin()){
-            if(player1Turn){
+        if (checkForWin()) {
+            if (player1Turn) {
                 player1Wins();
-            }else{
+            } else {
                 player2Wins();
             }
-        }else if(roundCount == 9){
+        } else if (roundCount == 9) {
             draw();
-        }else{
+        } else {
             player1Turn = !player1Turn;
         }
 
     }
 
-    private boolean checkForWin(){
-        String[][] array = new String[MAX_LENGTH][MAX_LENGTH];
+    private boolean checkForWin() {
+        String[][] field = new String[3][3];
 
-        for(int i = 0; i < MAX_LENGTH; i++){
-            for(int j = 0; j < MAX_LENGTH; j++){
-                array[i][j] = buttons[i][j].getText().toString();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                field[i][j] = buttons[i][j].getText().toString();
             }
         }
 
-        for(int i = 0; i < MAX_LENGTH; i++){
-            if(array[i][0].equals(array[i][1]) && array[i][0].equals(array[i][2])
-                    && !array[i][0].equals("")){
-                return true;
-            }
-        }
-        for(int i = 0; i < MAX_LENGTH; i++){
-            if(array[0][i].equals(array[1][i]) && array[0][i].equals(array[2][i])
-                    && !array[i][0].equals("")){
+        for (int i = 0; i < 3; i++) {
+            if (field[i][0].equals(field[i][1])
+                    && field[i][0].equals(field[i][2])
+                    && !field[i][0].equals("")) {
                 return true;
             }
         }
 
-        if(array[0][0].equals(array[1][1]) && array[0][0].equals(array[2][2])
-                && !array[0][0].equals("")){
+        for (int i = 0; i < 3; i++) {
+            if (field[0][i].equals(field[1][i])
+                    && field[0][i].equals(field[2][i])
+                    && !field[0][i].equals("")) {
+                return true;
+            }
+        }
+
+        if (field[0][0].equals(field[1][1])
+                && field[0][0].equals(field[2][2])
+                && !field[0][0].equals("")) {
             return true;
         }
 
-        if(array[0][2].equals(array[1][1]) && array[0][2].equals(array[2][0])
-                && !array[0][2].equals("")){
+        if (field[0][2].equals(field[1][1])
+                && field[0][2].equals(field[2][0])
+                && !field[0][2].equals("")) {
             return true;
         }
 
         return false;
     }
 
-    private void player1Wins(){
+    private void player1Wins() {
         showWinnerColors(color1ID);
-        Toast.makeText(this,"Player 1 wins!", Toast.LENGTH_LONG).show();
+        player1Points++;
+        Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
         resetBoard();
     }
 
-    private void player2Wins(){
+    private void player2Wins() {
         showWinnerColors(color2ID);
-        Toast.makeText(this,"Player 2 wins!", Toast.LENGTH_LONG).show();
+        player2Points++;
+        Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
         resetBoard();
     }
 
-    private void draw(){
-        Toast.makeText(this,"Draw!", Toast.LENGTH_SHORT).show();
+    private void draw() {
+        Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
         for(int i = 0; i < 3; i ++){
             for(int j = 0; j < 3; j++){
                 buttons[i][j].setBackground(getDrawable(R.drawable.gray_btn));
@@ -183,8 +195,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private void showWinnerColors(int color){
 
-        for (int i = 0; i < MAX_LENGTH; i++) {
-            for (int j = 0; j < MAX_LENGTH; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 buttons[i][j].setBackground(getDrawable(color));
             }
         }
@@ -207,15 +219,36 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void resetBoard(){
-        for(int i = 0; i < 3; i ++){
-            for(int j = 0; j < 3; j++){
+
+    private void resetBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 buttons[i][j].setText("");
             }
         }
+
         roundCount = 0;
-        player1Turn = !player1Turn;
+        player1Turn = true;
     }
 
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("roundCount", roundCount);
+        outState.putInt("player1Points", player1Points);
+        outState.putInt("player2Points", player2Points);
+        outState.putBoolean("player1Turn", player1Turn);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        roundCount = savedInstanceState.getInt("roundCount");
+        player1Points = savedInstanceState.getInt("player1Points");
+        player2Points = savedInstanceState.getInt("player2Points");
+        player1Turn = savedInstanceState.getBoolean("player1Turn");
+    }
 }

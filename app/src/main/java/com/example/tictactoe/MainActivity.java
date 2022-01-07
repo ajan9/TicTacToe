@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
-        view.setBackground(getDrawable(R.drawable.gray_btn));
         view.getBackground().setAlpha(64);
         view.setEnabled(false);
         click++;
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             i2.putExtra("Player1", player1Color);
             i2.putExtra("Player2", player2Color);
             startActivity(i2);
-            finish();
+
         }
 
     }
