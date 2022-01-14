@@ -13,23 +13,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lay0"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/button00"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
-            android:layout_margin="6dp"
             android:background="@drawable/gray_btn"
-            android:textSize="10dp"
+            android:onClick="playerTap"
+            android:tag="0"
             app:layout_constraintBottom_toTopOf="@+id/button10"
             app:layout_constraintEnd_toStartOf="@+id/button01"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,11 +41,12 @@
             android:id="@+id/button01"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="4dp"
-            android:layout_margin="6dp"
-            android:textSize="10dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="1"
             app:layout_constraintBottom_toTopOf="@+id/button11"
             app:layout_constraintEnd_toStartOf="@+id/button02"
             app:layout_constraintStart_toEndOf="@+id/button00"
@@ -53,11 +56,12 @@
             android:id="@+id/button02"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="4dp"
-            android:layout_margin="6dp"
-            android:textSize="10dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="2"
             app:layout_constraintBottom_toTopOf="@+id/button12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button01"
@@ -68,12 +72,13 @@
             android:id="@+id/button10"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="3dp"
-            android:layout_margin="6dp"
-            android:textSize="10dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="3"
             app:layout_constraintBottom_toTopOf="@+id/button20"
             app:layout_constraintEnd_toStartOf="@+id/button11"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,11 +88,12 @@
             android:id="@+id/button11"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_margin="6dp"
-            android:textSize="10dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="4"
             app:layout_constraintBottom_toTopOf="@+id/button21"
             app:layout_constraintEnd_toStartOf="@+id/button12"
             app:layout_constraintStart_toEndOf="@+id/button10"
@@ -97,11 +103,12 @@
             android:id="@+id/button12"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="3dp"
-            android:layout_margin="6dp"
-            android:textSize="10dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="5"
             app:layout_constraintBottom_toTopOf="@+id/button22"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button11"
@@ -112,11 +119,12 @@
             android:id="@+id/button20"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="6dp"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="4dp"
-            android:layout_margin="6dp"
-            android:textSize="10dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button21"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,10 +134,11 @@
             android:id="@+id/button21"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="3dp"
             android:layout_margin="6dp"
-            android:textSize="10dp"
+            android:layout_marginEnd="3dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button22"
             app:layout_constraintStart_toEndOf="@+id/button20"
@@ -139,14 +148,91 @@
             android:id="@+id/button22"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="2dp"
             android:layout_margin="6dp"
-            android:textSize="10dp"
+            android:layout_marginEnd="2dp"
             android:background="@drawable/gray_btn"
+            android:onClick="playerTap"
+            android:tag="8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button21"
             app:layout_constraintTop_toBottomOf="@+id/button12" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/leftResult0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false" />
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/leftResult1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false" />
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/leftResult2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false"/>
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/leftResult3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false"/>
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/rightResult3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false"/>
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/rightResult2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false" />
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/rightResult1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false" />
+
+        <com.example.tictactoe.SquareButton
+            android:id="@+id/rightResult0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/gray"
+            android:clickable="false"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

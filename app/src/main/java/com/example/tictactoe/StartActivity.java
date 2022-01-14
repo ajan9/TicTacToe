@@ -1,254 +1,266 @@
 package com.example.tictactoe;
 
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class StartActivity extends AppCompatActivity implements View.OnClickListener {
+public class StartActivity extends AppCompatActivity {
 
     private final AppCompatActivity activity = StartActivity.this;
 
-    private Button[][] buttons = new Button[3][3];
+    private Button[] buttons;
+    private Player player1, player2;
 
-    private boolean player1Turn = true;
+    View popup;
 
-    private int roundCount;
+    MediaPlayer sound;
 
-    private int player1Points;
-    private int player2Points;
-
-    static int color1ID, color2ID;
-    private String player1Color = "", player2Color = "";
-
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        initViews();
         initListeners();
 
-        Intent i  = getIntent();
-        player1Color = (String) i.getSerializableExtra("Player1");
-        player2Color = (String) i.getSerializableExtra("Player2");
-        playerColor(player1Color, player2Color);
+        SquareButton[] leftPoints = new SquareButton[]{findViewById(R.id.leftResult0), findViewById(R.id.leftResult1), findViewById(R.id.leftResult2), findViewById(R.id.leftResult3)};
+        SquareButton[] rightPoints = new SquareButton[]{findViewById(R.id.rightResult0), findViewById(R.id.rightResult1), findViewById(R.id.rightResult2), findViewById(R.id.rightResult3)};
 
+        Intent intent  = getIntent();
+        player1 = new Player((String) intent.getSerializableExtra("Player1"), leftPoints);
+        player2 = new Player((String) intent.getSerializableExtra("Player2"), rightPoints);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // NA REDU JE
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                MediaPlayer.create(StartActivity.this, player1.soundId).start(); // BOJA OD PLAYER1
+            }
+        });
+        //sound.start(); // OVO OTKOMENTIRATI KAD SE DODAJU SOUNDOVI
+    }
+
+    private void initViews(){
+        buttons = new Button[]{findViewById(R.id.button00), findViewById(R.id.button01), findViewById(R.id.button02),
+                findViewById(R.id.button10), findViewById(R.id.button11), findViewById(R.id.button12),
+                findViewById(R.id.button20), findViewById(R.id.button21), findViewById(R.id.button22)};
+
+        popup = getLayoutInflater().inflate(R.layout.winner_popup, null);
     }
 
     private void initListeners(){
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                String buttonID = "button" + i + j;
-                int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
-                buttons[i][j] = findViewById(resID);
-                buttons[i][j].setOnClickListener(this);
-            }
-        }
-
-    }
-
-    private void playerColor(String player1Color, String player2Color){
-        switch (player1Color){
-            case "blue":
-                color1ID = R.drawable.blue_btn;
-                break;
-            case "orange":
-                color1ID = R.drawable.orange_btn;
-                break;
-            case "red":
-                color1ID = R.drawable.red_btn;
-                break;
-            case "green":
-                color1ID = R.drawable.green_btn;
-                break;
-            case "yellow":
-                color1ID = R.drawable.yellow_btn;
-                break;
-            case "purple":
-                color1ID = R.drawable.purple_btn;
-                break;
-        }
-
-        switch (player2Color){
-            case "blue":
-                color2ID = R.drawable.blue_btn;
-                break;
-            case "orange":
-                color2ID = R.drawable.orange_btn;
-                break;
-            case "red":
-                color2ID = R.drawable.red_btn;
-                break;
-            case "green":
-                color2ID = R.drawable.green_btn;
-                break;
-            case "yellow":
-                color2ID = R.drawable.yellow_btn;
-                break;
-            case "purple":
-                color2ID = R.drawable.purple_btn;
-                break;
-        }
-
-    }
-
-
-
-    @Override
-    public void onClick(View v) {
-        if (!((Button) v).getText().toString().equals("")) {
-            return;
-        }
-
-        if (player1Turn) {
-            ((Button) v).setText("X");
-            ((Button)v).setBackground(getDrawable(color1ID));
-        } else {
-            ((Button) v).setText("O");
-            ((Button)v).setBackground(getDrawable(color2ID));
-        }
-
-        roundCount++;
-
-        if (checkForWin()) {
-            if (player1Turn) {
-                player1Wins();
-            } else {
-                player2Wins();
-            }
-        } else if (roundCount == 9) {
-            draw();
-        } else {
-            player1Turn = !player1Turn;
-        }
-
-    }
-
-    private boolean checkForWin() {
-        String[][] field = new String[3][3];
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                field[i][j] = buttons[i][j].getText().toString();
-            }
-        }
-
-        for (int i = 0; i < 3; i++) {
-            if (field[i][0].equals(field[i][1])
-                    && field[i][0].equals(field[i][2])
-                    && !field[i][0].equals("")) {
-                return true;
-            }
-        }
-
-        for (int i = 0; i < 3; i++) {
-            if (field[0][i].equals(field[1][i])
-                    && field[0][i].equals(field[2][i])
-                    && !field[0][i].equals("")) {
-                return true;
-            }
-        }
-
-        if (field[0][0].equals(field[1][1])
-                && field[0][0].equals(field[2][2])
-                && !field[0][0].equals("")) {
-            return true;
-        }
-
-        if (field[0][2].equals(field[1][1])
-                && field[0][2].equals(field[2][0])
-                && !field[0][2].equals("")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private void player1Wins() {
-        showWinnerColors(color1ID);
-        player1Points++;
-        Toast.makeText(this, "Player 1 wins!", Toast.LENGTH_SHORT).show();
-        resetBoard();
-    }
-
-    private void player2Wins() {
-        showWinnerColors(color2ID);
-        player2Points++;
-        Toast.makeText(this, "Player 2 wins!", Toast.LENGTH_SHORT).show();
-        resetBoard();
-    }
-
-    private void draw() {
-        Toast.makeText(this, "Draw!", Toast.LENGTH_SHORT).show();
-        for(int i = 0; i < 3; i ++){
-            for(int j = 0; j < 3; j++){
-                buttons[i][j].setBackground(getDrawable(R.drawable.gray_btn));
-            }
-        }
-        resetBoard();
-    }
-
-    private void showWinnerColors(int color){
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                buttons[i][j].setBackground(getDrawable(color));
-            }
-        }
-
-        new CountDownTimer(2000, 50) {
+        popup.findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTick(long arg0) {
-
+            public void onClick(View view) {
+                counter = 0;
+                finish();
+                startActivity(getIntent());
             }
+        });
+    }
 
-            @Override
-            public void onFinish() {
-                for(int i = 0; i < 3; i ++){
-                    for(int j = 0; j < 3; j++){
-                        buttons[i][j].setBackground(getDrawable(R.drawable.gray_btn));
+    boolean startsFirst = false; // tko igra prvi: true za player1 i false za player2
+    boolean gameDone = false;
+    boolean gameActive = true;
+
+    // Player representation
+    // 0 - X
+    // 1 - O
+    int activePlayer = 0;
+    int[] gameState = {2, 2, 2, 2, 2, 2, 2, 2, 2};
+
+    // State meanings:
+    //    0 - X
+    //    1 - O
+    //    2 - Null
+    // put all win positions in a 2D array
+    int[][] winPositions = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
+            {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
+            {0, 4, 8}, {2, 4, 6}};
+    public static int counter = 0;
+
+    // this function will be called every time a
+    // players tap in an empty box of the grid
+    @SuppressLint({"ResourceAsColor", "UseCompatLoadingForColorStateLists", "SetTextI18n"})
+    public void playerTap(View view) {
+        Button btn = (Button) view;
+        int tappedButton = Integer.parseInt(btn.getTag().toString());
+
+        if(gameDone) {
+            counter = 0;
+            finish();
+            startActivity(getIntent());
+        }
+
+        // game reset function will be called
+        // if someone wins or the boxes are full
+        if (!gameActive) {
+            gameReset();
+        } else {
+            // if the tapped image is empty
+            if (gameState[tappedButton] == 2) {
+                // increase the counter
+                // after every tap
+                counter++;
+
+                // check if its the last box
+                if (counter == 9) {
+                    // reset the game
+                    gameActive = false;
+                }
+
+                // mark this position
+                gameState[tappedButton] = activePlayer;
+
+                // change the active player
+                // from 0 to 1 or 1 to 0
+                if (activePlayer == 0) {
+                    // set the image of x
+                    btn.setBackgroundTintList(this.getResources().getColorStateList(player1.colorId));
+                    activePlayer = 1;
+
+                } else {
+                    // set the image of o
+                    btn.setBackgroundTintList(this.getResources().getColorStateList(player2.colorId));
+                    activePlayer = 0;
+                }
+            }
+            int flag = 0;
+            // Check if any player has won
+            for (int[] winPosition : winPositions) {
+                if (gameState[winPosition[0]] == gameState[winPosition[1]] &&
+                        gameState[winPosition[1]] == gameState[winPosition[2]] &&
+                        gameState[winPosition[0]] != 2) {
+                    flag = 1;
+
+                    // game reset function be called
+                    gameActive = false;
+                    if (gameState[winPosition[0]] == 0) {
+                        player1.points++;
+                        startAnimation(player1.pointButton[player1.points-1], player1.colorId);
+
+                        if(player1.points == 4){
+                            showPopup(player1);
+                            gameDone = true;
+                        }
+                    } else {
+                        player2.points++;
+                        startAnimation(player2.pointButton[player2.points-1], player2.colorId);
+
+                        if(player2.points == 4){
+                            showPopup(player2);
+                            gameDone = true;
+                        }
+                    }
+
+                    for (int i = 0; i < 9; i++) {
+                        Button button = buttons[i];
+                        if ((winPosition[0] != Integer.parseInt(button.getTag().toString())) && (winPosition[1] != Integer.parseInt(button.getTag().toString())) && (winPosition[2] != Integer.parseInt(button.getTag().toString()))) {
+                            button.setAlpha(0.4F);
+                        }
+
                     }
                 }
             }
-        }.start();
-
-    }
-
-
-    private void resetBoard() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                buttons[i][j].setText("");
+            // set the status if the match draw
+            if (counter == 9 && flag == 0) {
+                for (int i = 0; i < 9; i++) {
+                    Button button = buttons[i];
+                    button.setAlpha(0.4F);
+                }
+                Toast.makeText(this, "Neriješeno!", Toast.LENGTH_SHORT).show();
             }
         }
-
-        roundCount = 0;
-        player1Turn = true;
     }
 
+    // reset the game
+    @SuppressLint({"ResourceAsColor", "UseCompatLoadingForColorStateLists"})
+    public void gameReset() {
+        gameActive = true;
+        counter = 0;
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        startsFirst = !startsFirst;
+        if(startsFirst) activePlayer = 0;
+        else activePlayer = 1;
 
-        outState.putInt("roundCount", roundCount);
-        outState.putInt("player1Points", player1Points);
-        outState.putInt("player2Points", player2Points);
-        outState.putBoolean("player1Turn", player1Turn);
+        for (int i = 0; i < 9; i++) {
+            gameState[i] = 2;
+            buttons[i].setBackgroundTintList(this.getResources().getColorStateList(R.color.gray));
+            buttons[i].setAlpha(1F);
+        }
+
+        // DODATI SOUND "Na redu je..."
+        // DODATI SOUND ZA BOJU (activePlayer -> player.soundId)
+        sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // NA REDU JE
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if(activePlayer == 0){
+                    MediaPlayer.create(StartActivity.this, player1.soundId).start(); // BOJA OD PLAYER1
+                } else {
+                    MediaPlayer.create(StartActivity.this, player2.soundId).start(); // BOJA OD PLAYER2
+                }
+            }
+        });
+        //sound.start(); // OVO OTKOMENTIRATI KAD SE DODAJU SOUNDOVI
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    public void startAnimation(View view, int color){
+        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "rotationY", 180f, 0f);
+        animation.setDuration(800);
+        animation.start();
 
-        roundCount = savedInstanceState.getInt("roundCount");
-        player1Points = savedInstanceState.getInt("player1Points");
-        player2Points = savedInstanceState.getInt("player2Points");
-        player1Turn = savedInstanceState.getBoolean("player1Turn");
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @SuppressLint("UseCompatLoadingForColorStateLists")
+            @Override
+            public void run() {
+                view.setBackgroundTintList(getResources().getColorStateList(color));
+            }
+        }, 400);
+    }
+
+    @SuppressLint({"UseCompatLoadingForColorStateLists", "SetTextI18n"})
+    public void showPopup(Player player) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog dialog;
+        popup.findViewById(R.id.squareButton).setBackgroundTintList(this.getResources().getColorStateList(player.colorId));
+        ((TextView) popup.findViewById(R.id.colorId)).setText(player.color.toUpperCase() + "!");
+        dialogBuilder.setView(popup);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        // DODATI SOUND "Pobjednik je..."
+        // DODATI SOUND ZA BOJU (player.soundId)
+        sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // POBJEDNIK JE
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                MediaPlayer.create(StartActivity.this, player.soundId).start(); // BOJA POBJEDNIKA
+            }
+        });
+        //sound.start(); // OVO OTKOMENTIRATI KAD SE DODAJU SOUNDOVI
+
     }
 }
+

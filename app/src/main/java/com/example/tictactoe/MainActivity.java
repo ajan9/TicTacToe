@@ -1,22 +1,25 @@
 package com.example.tictactoe;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.os.CountDownTimer;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final AppCompatActivity activity = MainActivity.this;
-
     private boolean flag1Player = false;
     private boolean flag2Player = false;
-    private static int click = 0;
+    private int click = 0;
     private String player1Color, player2Color;
     String color;
+    MediaPlayer sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button green = findViewById(R.id.green); green.setOnClickListener(this);
         Button yellow = findViewById(R.id.yellow); yellow.setOnClickListener(this);
         Button purple = findViewById(R.id.purple); purple.setOnClickListener(this);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sound = MediaPlayer.create(MainActivity.this, R.raw.odaberi_boje);
+        sound.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sound.stop();
     }
 
     @Override
@@ -37,26 +54,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button b = (Button)view;
         switch (b.getId()){
             case R.id.blue:
-                color = "blue";
+                color = "plavi";
                 break;
             case R.id.orange:
-                color = "orange";
+                color = "narančasti";
                 break;
             case R.id.red:
-                color = "red";
+                color = "crveni";
                 break;
             case R.id.green:
-                color = "green";
+                color = "zeleni";
                 break;
             case R.id.yellow:
-                color = "yellow";
+                color = "žuti";
                 break;
             case R.id.purple:
-                color = "purple";
+                color = "ljubičasti";
                 break;
         }
 
-        view.getBackground().setAlpha(64);
+        view.setAlpha(0.5F);
         view.setEnabled(false);
         click++;
         checkPlayer(color);
@@ -72,15 +89,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(flag1Player && flag2Player) {
-            Intent i = new Intent(activity, StartActivity.class);
-            startActivity(i);
-
-            Intent i2 = new Intent(this, StartActivity.class);
-            i2.putExtra("Player1", player1Color);
-            i2.putExtra("Player2", player2Color);
-            startActivity(i2);
-
+            Intent intent = new Intent(this, StartActivity.class);
+            intent.putExtra("Player1", player1Color);
+            intent.putExtra("Player2", player2Color);
+            startActivity(intent);
+            finish();
         }
 
     }
+
+
 }
