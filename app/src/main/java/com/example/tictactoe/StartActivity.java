@@ -79,7 +79,7 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
-    boolean startsFirst = false; // tko igra prvi: true za player1 i false za player2
+    boolean startsFirst = true; // tko igra prvi: true za player1 i false za player2
     boolean gameDone = false;
     boolean gameActive = true;
 
