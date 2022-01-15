@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        sound = MediaPlayer.create(MainActivity.this, R.raw.odaberi_boje);
+        sound = MediaPlayer.create(MainActivity.this, R.raw.odaberite_dvije_boje);
         sound.start();
     }
 
@@ -55,24 +55,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (b.getId()){
             case R.id.blue:
                 color = "plavi";
+                sound = MediaPlayer.create(MainActivity.this, R.raw.plava);
                 break;
             case R.id.orange:
                 color = "narančasti";
+                sound = MediaPlayer.create(MainActivity.this, R.raw.narancasta);
                 break;
             case R.id.red:
                 color = "crveni";
+                sound = MediaPlayer.create(MainActivity.this, R.raw.crvena);
                 break;
             case R.id.green:
                 color = "zeleni";
+                sound = MediaPlayer.create(MainActivity.this, R.raw.zelena);
                 break;
             case R.id.yellow:
                 color = "žuti";
+                sound = MediaPlayer.create(MainActivity.this, R.raw.zuta);
                 break;
             case R.id.purple:
-                color = "ljubičasti";
+                color = "ružičasti";
+                sound = MediaPlayer.create(MainActivity.this, R.raw.ruzicasta);
                 break;
         }
 
+        sound.start();
         view.setAlpha(0.5F);
         view.setEnabled(false);
         click++;

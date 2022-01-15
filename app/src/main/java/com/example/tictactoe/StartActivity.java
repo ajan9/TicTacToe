@@ -53,13 +53,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // NA REDU JE
-        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                MediaPlayer.create(StartActivity.this, player1.soundId).start(); // BOJA OD PLAYER1
-            }
-        });
-        //sound.start(); // OVO OTKOMENTIRATI KAD SE DODAJU SOUNDOVI
+        sound.start();
     }
 
     private void initViews(){
@@ -208,8 +202,13 @@ public class StartActivity extends AppCompatActivity {
         counter = 0;
 
         startsFirst = !startsFirst;
-        if(startsFirst) activePlayer = 0;
-        else activePlayer = 1;
+        if(startsFirst) {
+            activePlayer = 0;
+            sound = MediaPlayer.create(StartActivity.this, player1.turnSoundId);
+        } else{
+            activePlayer = 1;
+            sound = MediaPlayer.create(StartActivity.this, player2.turnSoundId);
+        }
 
         for (int i = 0; i < 9; i++) {
             gameState[i] = 2;
@@ -217,20 +216,7 @@ public class StartActivity extends AppCompatActivity {
             buttons[i].setAlpha(1F);
         }
 
-        // DODATI SOUND "Na redu je..."
-        // DODATI SOUND ZA BOJU (activePlayer -> player.soundId)
-        sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // NA REDU JE
-        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if(activePlayer == 0){
-                    MediaPlayer.create(StartActivity.this, player1.soundId).start(); // BOJA OD PLAYER1
-                } else {
-                    MediaPlayer.create(StartActivity.this, player2.soundId).start(); // BOJA OD PLAYER2
-                }
-            }
-        });
-        //sound.start(); // OVO OTKOMENTIRATI KAD SE DODAJU SOUNDOVI
+        sound.start();
     }
 
     public void startAnimation(View view, int color){
@@ -258,16 +244,8 @@ public class StartActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
-        // DODATI SOUND "Pobjednik je..."
-        // DODATI SOUND ZA BOJU (player.soundId)
-        sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // POBJEDNIK JE
-        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                MediaPlayer.create(StartActivity.this, player.soundId).start(); // BOJA POBJEDNIKA
-            }
-        });
-        //sound.start(); // OVO OTKOMENTIRATI KAD SE DODAJU SOUNDOVI
+        sound = MediaPlayer.create(StartActivity.this, player.winnerSoundId); // POBJEDNIK JE
+        sound.start();
 
     }
 }

@@ -5,7 +5,8 @@ import android.content.Context;
 import android.widget.Button;
 
 public class Player {
-    int soundId;
+    int winnerSoundId;
+    int turnSoundId;
     int colorId;
     String color;
     int points = 0;
@@ -18,27 +19,33 @@ public class Player {
 
         switch (color){
             case "plavi":
-                soundId = R.raw.odaberi_boje;
+                winnerSoundId = R.raw.pobjednik_je_plavi;
+                turnSoundId = R.raw.na_redu_je_plavi;
                 colorId = R.color.blue;
                 break;
             case "narančasti":
-                soundId = R.raw.odaberi_boje;
+                winnerSoundId = R.raw.pobjednik_je_narancasti;
+                turnSoundId = R.raw.na_redu_je_narancasti;
                 colorId = R.color.orange;
                 break;
             case "crveni":
-                soundId = R.raw.odaberi_boje;
+                winnerSoundId = R.raw.pobjednik_je_crveni;
+                turnSoundId = R.raw.na_redu_je_crveni;
                 colorId = R.color.red;
                 break;
             case "zeleni":
-                soundId = R.raw.odaberi_boje;
+                winnerSoundId = R.raw.pobjednik_je_zeleni;
+                turnSoundId = R.raw.na_redu_je_zeleni;
                 colorId = R.color.green;
                 break;
             case "žuti":
-                soundId = R.raw.odaberi_boje;
+                winnerSoundId = R.raw.pobjednik_je_zuti;
+                turnSoundId = R.raw.na_redu_je_zuti;
                 colorId = R.color.yellow;
                 break;
-            case "ljubičasti":
-                soundId = R.raw.odaberi_boje;
+            case "ružičasti":
+                winnerSoundId = R.raw.pobjednik_je_ruzicasti;
+                turnSoundId = R.raw.na_redu_je_ruzicasti;
                 colorId = R.color.purple;
                 break;
         }
