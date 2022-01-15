@@ -29,7 +29,7 @@ public class StartActivity extends AppCompatActivity {
 
     View popup;
 
-    MediaPlayer sound;
+    MediaPlayer winnerSound, turnSound, newGameSound;
     AudioManager am;
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
@@ -53,8 +53,8 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        sound = MediaPlayer.create(StartActivity.this, player1.turnSoundId); // NA REDU JE
-        sound.start();
+        turnSound = MediaPlayer.create(StartActivity.this, player1.turnSoundId); // NA REDU JE
+        turnSound.start();
     }
 
     private void initViews(){
@@ -207,10 +207,10 @@ public class StartActivity extends AppCompatActivity {
         startsFirst = !startsFirst;
         if(startsFirst) {
             activePlayer = 0;
-            sound = MediaPlayer.create(StartActivity.this, player1.turnSoundId);
+            turnSound = MediaPlayer.create(StartActivity.this, player1.turnSoundId);
         } else{
             activePlayer = 1;
-            sound = MediaPlayer.create(StartActivity.this, player2.turnSoundId);
+            turnSound = MediaPlayer.create(StartActivity.this, player2.turnSoundId);
         }
 
         for (int i = 0; i < 9; i++) {
@@ -220,7 +220,7 @@ public class StartActivity extends AppCompatActivity {
             buttons[i].setClickable(true);
         }
 
-        sound.start();
+        turnSound.start();
     }
 
     public void startAnimation(View view, int color){
@@ -248,15 +248,15 @@ public class StartActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
-        sound = MediaPlayer.create(StartActivity.this, player.winnerSoundId); // POBJEDNIK JE
-        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        winnerSound = MediaPlayer.create(StartActivity.this, player.winnerSoundId); // POBJEDNIK JE
+        winnerSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                sound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
-                sound.start();
+                newGameSound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
+                newGameSound.start();
             }
         });
-        sound.start();
+        winnerSound.start();
 
     }
 }
