@@ -70,8 +70,9 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 counter = 0;
+                Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
-                startActivity(getIntent());
             }
         });
     }
@@ -100,6 +101,7 @@ public class StartActivity extends AppCompatActivity {
     // players tap in an empty box of the grid
     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForColorStateLists", "SetTextI18n"})
     public void playerTap(View view) {
+        view.setClickable(false);
         playSound();
         Button btn = (Button) view;
         int tappedButton = Integer.parseInt(btn.getTag().toString());
@@ -215,6 +217,7 @@ public class StartActivity extends AppCompatActivity {
             gameState[i] = 2;
             buttons[i].setBackgroundTintList(this.getResources().getColorStateList(R.color.gray));
             buttons[i].setAlpha(1F);
+            buttons[i].setClickable(true);
         }
 
         sound.start();
