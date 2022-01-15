@@ -30,6 +30,7 @@ public class StartActivity extends AppCompatActivity {
     View popup;
 
     MediaPlayer sound;
+    AudioManager am;
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
     @Override
@@ -52,7 +53,7 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        sound = MediaPlayer.create(StartActivity.this, R.raw.odaberi_boje); // NA REDU JE
+        sound = MediaPlayer.create(StartActivity.this, player1.turnSoundId); // NA REDU JE
         sound.start();
     }
 
@@ -191,7 +192,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void playSound(){
-        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR, 1f);
     }
 

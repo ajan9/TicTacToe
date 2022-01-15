@@ -96,11 +96,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(flag1Player && flag2Player) {
-            Intent intent = new Intent(this, StartActivity.class);
-            intent.putExtra("Player1", player1Color);
-            intent.putExtra("Player2", player2Color);
-            startActivity(intent);
-            finish();
+            sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                    intent.putExtra("Player1", player1Color);
+                    intent.putExtra("Player2", player2Color);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
         }
 
     }
