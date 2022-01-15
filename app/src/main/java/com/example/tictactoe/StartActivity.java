@@ -249,6 +249,13 @@ public class StartActivity extends AppCompatActivity {
         dialog.show();
 
         sound = MediaPlayer.create(StartActivity.this, player.winnerSoundId); // POBJEDNIK JE
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                sound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
+                sound.start();
+            }
+        });
         sound.start();
 
     }
