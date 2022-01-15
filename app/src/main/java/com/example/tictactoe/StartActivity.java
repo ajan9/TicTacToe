@@ -2,7 +2,9 @@ package com.example.tictactoe;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -103,6 +105,7 @@ public class StartActivity extends AppCompatActivity {
     // players tap in an empty box of the grid
     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForColorStateLists", "SetTextI18n"})
     public void playerTap(View view) {
+        playSound();
         Button btn = (Button) view;
         int tappedButton = Integer.parseInt(btn.getTag().toString());
 
@@ -191,6 +194,11 @@ public class StartActivity extends AppCompatActivity {
                 Toast.makeText(this, "Neriješeno!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void playSound(){
+        AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        am.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR, 1f);
     }
 
     // reset the game
