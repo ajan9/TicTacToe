@@ -22,8 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class StartActivity extends AppCompatActivity {
 
-    private final AppCompatActivity activity = StartActivity.this;
-
     private Button[] buttons;
     private Player player1, player2;
 
@@ -57,6 +55,18 @@ public class StartActivity extends AppCompatActivity {
         turnSound.start();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        turnSound.stop();
+        if (winnerSound != null) {
+            winnerSound.stop();
+        }
+        if (newGameSound != null) {
+            newGameSound.stop();
+        }
+    }
+
     private void initViews(){
         buttons = new Button[]{findViewById(R.id.button00), findViewById(R.id.button01), findViewById(R.id.button02),
                 findViewById(R.id.button10), findViewById(R.id.button11), findViewById(R.id.button12),
@@ -70,9 +80,9 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 counter = 0;
+                finish();
                 Intent intent = new Intent(StartActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
@@ -101,7 +111,7 @@ public class StartActivity extends AppCompatActivity {
     // players tap in an empty box of the grid
     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForColorStateLists", "SetTextI18n"})
     public void playerTap(View view) {
-        view.setClickable(false);
+        turnSound.stop(); // zaustavlja sound tko je na redu cim igrac odigra
         playSound();
         Button btn = (Button) view;
         int tappedButton = Integer.parseInt(btn.getTag().toString());
@@ -109,7 +119,9 @@ public class StartActivity extends AppCompatActivity {
         if(gameDone) {
             counter = 0;
             finish();
-            startActivity(getIntent());
+            Intent intent = new Intent(StartActivity.this, MainActivity.class);
+            startActivity(intent);
+            return;
         }
 
         // game reset function will be called
@@ -117,6 +129,7 @@ public class StartActivity extends AppCompatActivity {
         if (!gameActive) {
             gameReset();
         } else {
+            view.setClickable(false);
             // if the tapped image is empty
             if (gameState[tappedButton] == 2) {
                 // increase the counter
@@ -173,20 +186,21 @@ public class StartActivity extends AppCompatActivity {
                         }
                     }
 
-                    for (int i = 0; i < 9; i++) {
-                        Button button = buttons[i];
+                    for (Button button : buttons) {
                         if ((winPosition[0] != Integer.parseInt(button.getTag().toString())) && (winPosition[1] != Integer.parseInt(button.getTag().toString())) && (winPosition[2] != Integer.parseInt(button.getTag().toString()))) {
                             button.setAlpha(0.4F);
                         }
-
+                        button.setClickable(true);
                     }
+
+                    break;
                 }
             }
             // set the status if the match draw
             if (counter == 9 && flag == 0) {
-                for (int i = 0; i < 9; i++) {
-                    Button button = buttons[i];
+                for (Button button : buttons) {
                     button.setAlpha(0.4F);
+                    button.setClickable(true);
                 }
                 Toast.makeText(this, "Neriješeno!", Toast.LENGTH_SHORT).show();
             }
@@ -217,7 +231,6 @@ public class StartActivity extends AppCompatActivity {
             gameState[i] = 2;
             buttons[i].setBackgroundTintList(this.getResources().getColorStateList(R.color.gray));
             buttons[i].setAlpha(1F);
-            buttons[i].setClickable(true);
         }
 
         turnSound.start();

@@ -20,18 +20,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String player1Color, player2Color;
     String color;
     MediaPlayer sound;
+    Button blue;
+    Button orange;
+    Button red;
+    Button green;
+    Button yellow;
+    Button purple;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button blue = findViewById(R.id.blue); blue.setOnClickListener(this);
-        Button orange = findViewById(R.id.orange); orange.setOnClickListener(this);
-        Button red = findViewById(R.id.red); red.setOnClickListener(this);
-        Button green = findViewById(R.id.green); green.setOnClickListener(this);
-        Button yellow = findViewById(R.id.yellow); yellow.setOnClickListener(this);
-        Button purple = findViewById(R.id.purple); purple.setOnClickListener(this);
+        blue = findViewById(R.id.blue); blue.setOnClickListener(this);
+        orange = findViewById(R.id.orange); orange.setOnClickListener(this);
+        red = findViewById(R.id.red); red.setOnClickListener(this);
+        green = findViewById(R.id.green); green.setOnClickListener(this);
+        yellow = findViewById(R.id.yellow); yellow.setOnClickListener(this);
+        purple = findViewById(R.id.purple); purple.setOnClickListener(this);
 
     }
 
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
+        sound.stop();
         Button b = (Button)view;
         switch (b.getId()){
             case R.id.blue:
@@ -96,6 +102,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(flag1Player && flag2Player) {
+            blue.setClickable(false);
+            orange.setClickable(false);
+            red.setClickable(false);
+            green.setClickable(false);
+            yellow.setClickable(false);
+            purple.setClickable(false);
+
             sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
