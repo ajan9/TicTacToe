@@ -30,6 +30,15 @@ public class StartActivity extends AppCompatActivity {
     MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound;
     AudioManager am;
 
+    boolean startsFirst = true; // tko igra prvi: true za player1 i false za player2
+    boolean gameDone = false;
+    boolean gameActive = true;
+
+    // Player representation
+    // 0 - X
+    // 1 - O
+    int activePlayer = 0;
+
     @SuppressLint("UseCompatLoadingForColorStateLists")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +60,20 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        turnSound = MediaPlayer.create(StartActivity.this, player1.turnSoundId); // NA REDU JE
+        if(activePlayer == 0) {
+            turnSound = MediaPlayer.create(StartActivity.this, player1.turnSoundId);
+        } else{
+            turnSound = MediaPlayer.create(StartActivity.this, player2.turnSoundId);
+        }
         turnSound.start();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        turnSound.stop();
+    protected void onStop() {
+        super.onStop();
+        if (turnSound != null) {
+            turnSound.stop();
+        }
         if (winnerSound != null) {
             winnerSound.stop();
         }
@@ -87,14 +102,6 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
-    boolean startsFirst = true; // tko igra prvi: true za player1 i false za player2
-    boolean gameDone = false;
-    boolean gameActive = true;
-
-    // Player representation
-    // 0 - X
-    // 1 - O
-    int activePlayer = 0;
     int[] gameState = {2, 2, 2, 2, 2, 2, 2, 2, 2};
 
     // State meanings:
