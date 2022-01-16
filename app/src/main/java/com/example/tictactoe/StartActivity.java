@@ -27,7 +27,7 @@ public class StartActivity extends AppCompatActivity {
 
     View popup;
 
-    MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound;
+    MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound, roundOver;
     AudioManager am;
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
@@ -193,6 +193,8 @@ public class StartActivity extends AppCompatActivity {
                         button.setClickable(true);
                     }
 
+                    roundOver = MediaPlayer.create(StartActivity.this, R.raw.obavijest_kraj_partije);
+                    roundOver.start();
                     break;
                 }
             }
