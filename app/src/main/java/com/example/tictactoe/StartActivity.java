@@ -1,9 +1,12 @@
 package com.example.tictactoe;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -26,6 +29,11 @@ public class StartActivity extends AppCompatActivity {
     private Player player1, player2;
 
     View popup;
+    AlertDialog.Builder dialogBuilder;
+    AlertDialog dialog;
+
+    ObjectAnimator animation;
+    final Handler handler = new Handler();
 
     MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound, roundOver;
     AudioManager am;
@@ -96,6 +104,7 @@ public class StartActivity extends AppCompatActivity {
         popup.findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
                 counter = 0;
                 finish();
                 Intent intent = new Intent(StartActivity.this, MainActivity.class);
@@ -201,9 +210,11 @@ public class StartActivity extends AppCompatActivity {
                         }
                         button.setClickable(true);
                     }
+                    if(!gameDone){
+                        roundOver = MediaPlayer.create(StartActivity.this, R.raw.obavijest_kraj_partije);
+                        roundOver.start();
+                    }
 
-                    roundOver = MediaPlayer.create(StartActivity.this, R.raw.obavijest_kraj_partije);
-                    roundOver.start();
                     break;
                 }
             }
@@ -248,24 +259,24 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void startAnimation(View view, int color){
-        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "rotationY", 180f, 0f);
-        animation.setDuration(800);
-        animation.start();
+        int colorFrom = getResources().getColor(R.color.gray);
+        int colorTo = getResources().getColor(color);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(500); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @SuppressLint("UseCompatLoadingForColorStateLists")
             @Override
-            public void run() {
-                view.setBackgroundTintList(getResources().getColorStateList(color));
+            public void onAnimationUpdate(ValueAnimator animator) {
+                view.setBackgroundTintList(ColorStateList.valueOf((int) animator.getAnimatedValue()));
             }
-        }, 400);
+
+        });
+        colorAnimation.start();
     }
 
     @SuppressLint({"UseCompatLoadingForColorStateLists", "SetTextI18n"})
     public void showPopup(Player player) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        AlertDialog dialog;
+        dialogBuilder = new AlertDialog.Builder(this);
         popup.findViewById(R.id.squareButton).setBackgroundTintList(this.getResources().getColorStateList(player.colorId));
         ((TextView) popup.findViewById(R.id.colorId)).setText(player.color.toUpperCase() + "!");
         dialogBuilder.setView(popup);
