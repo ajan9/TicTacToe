@@ -60,12 +60,14 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(activePlayer == 0) {
+        if(gameActive){
+            if(activePlayer == 0) {
             turnSound = MediaPlayer.create(StartActivity.this, player1.turnSoundId);
-        } else{
-            turnSound = MediaPlayer.create(StartActivity.this, player2.turnSoundId);
+            } else{
+                turnSound = MediaPlayer.create(StartActivity.this, player2.turnSoundId);
+            }
+            turnSound.start();
         }
-        turnSound.start();
     }
 
     @Override
