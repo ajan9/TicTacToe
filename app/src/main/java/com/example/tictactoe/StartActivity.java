@@ -27,7 +27,7 @@ public class StartActivity extends AppCompatActivity {
 
     View popup;
 
-    MediaPlayer winnerSound, turnSound, newGameSound;
+    MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound;
     AudioManager am;
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
@@ -261,15 +261,23 @@ public class StartActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
+        winnerShortSound = MediaPlayer.create(StartActivity.this, R.raw.pobjednik_zvuk);
         winnerSound = MediaPlayer.create(StartActivity.this, player.winnerSoundId); // POBJEDNIK JE
-        winnerSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+        winnerShortSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                newGameSound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
-                newGameSound.start();
+                winnerSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        newGameSound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
+                        newGameSound.start();
+                    }
+                });
+                winnerSound.start();
             }
         });
-        winnerSound.start();
+        winnerShortSound.start();
 
     }
 }
