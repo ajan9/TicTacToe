@@ -34,9 +34,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:text="ODABERI BOJE"
+                android:text="ODABERITE BOJE"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="50sp"/>
+                android:textSize="50sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

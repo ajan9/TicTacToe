@@ -35,7 +35,7 @@ public class StartActivity extends AppCompatActivity {
     ObjectAnimator animation;
     final Handler handler = new Handler();
 
-    MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound, roundOver;
+    MediaPlayer winnerSound, turnSound, newGameSound, winnerShortSound, roundOver, drawSound;
     AudioManager am;
 
     boolean startsFirst = true; // tko igra prvi: true za player1 i false za player2
@@ -63,6 +63,7 @@ public class StartActivity extends AppCompatActivity {
         player1 = new Player((String) intent.getSerializableExtra("Player1"), leftPoints);
         player2 = new Player((String) intent.getSerializableExtra("Player2"), rightPoints);
 
+        drawSound = MediaPlayer.create(StartActivity.this, R.raw.nerijeseno);
     }
 
     @Override
@@ -224,6 +225,7 @@ public class StartActivity extends AppCompatActivity {
                     button.setAlpha(0.4F);
                     button.setClickable(true);
                 }
+                drawSound.start();
                 Toast.makeText(this, "Neriješeno!", Toast.LENGTH_SHORT).show();
             }
         }
