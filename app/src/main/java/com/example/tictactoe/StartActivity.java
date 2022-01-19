@@ -63,7 +63,9 @@ public class StartActivity extends AppCompatActivity {
         player1 = new Player((String) intent.getSerializableExtra("Player1"), leftPoints);
         player2 = new Player((String) intent.getSerializableExtra("Player2"), rightPoints);
 
-        drawSound = MediaPlayer.create(StartActivity.this, R.raw.nerijeseno);
+        winnerShortSound = MediaPlayer.create(StartActivity.this, R.raw.pobjednik_zvuk);
+        roundOver = MediaPlayer.create(StartActivity.this, R.raw.obavijest_kraj_partije);
+        newGameSound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
     }
 
     @Override
@@ -82,15 +84,6 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (turnSound != null) {
-            turnSound.stop();
-        }
-        if (winnerSound != null) {
-            winnerSound.stop();
-        }
-        if (newGameSound != null) {
-            newGameSound.stop();
-        }
     }
 
     private void initViews(){
@@ -102,12 +95,14 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void initListeners(){
+
         popup.findViewById(R.id.reset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
                 counter = 0;
                 finish();
+                System.gc();
                 Intent intent = new Intent(StartActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -130,7 +125,7 @@ public class StartActivity extends AppCompatActivity {
     // players tap in an empty box of the grid
     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForColorStateLists", "SetTextI18n"})
     public void playerTap(View view) {
-        turnSound.stop(); // zaustavlja sound tko je na redu cim igrac odigra
+        turnSound.stop();
         playSound();
         Button btn = (Button) view;
         int tappedButton = Integer.parseInt(btn.getTag().toString());
@@ -212,7 +207,6 @@ public class StartActivity extends AppCompatActivity {
                         button.setClickable(true);
                     }
                     if(!gameDone){
-                        roundOver = MediaPlayer.create(StartActivity.this, R.raw.obavijest_kraj_partije);
                         roundOver.start();
                     }
 
@@ -225,7 +219,6 @@ public class StartActivity extends AppCompatActivity {
                     button.setAlpha(0.4F);
                     button.setClickable(true);
                 }
-                drawSound.start();
                 Toast.makeText(this, "Neriješeno!", Toast.LENGTH_SHORT).show();
             }
         }
@@ -285,7 +278,6 @@ public class StartActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
-        winnerShortSound = MediaPlayer.create(StartActivity.this, R.raw.pobjednik_zvuk);
         winnerSound = MediaPlayer.create(StartActivity.this, player.winnerSoundId); // POBJEDNIK JE
 
         winnerShortSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -294,15 +286,25 @@ public class StartActivity extends AppCompatActivity {
                 winnerSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        newGameSound = MediaPlayer.create(StartActivity.this, R.raw.nova_igra);
+                        newGameSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mediaPlayer) {
+                                newGameSound.release();
+                            }
+                        });
                         newGameSound.start();
+                        winnerSound.release();
                     }
                 });
                 winnerSound.start();
+                winnerShortSound.release();
             }
         });
         winnerShortSound.start();
-
+        roundOver.release();
+        turnSound.release();
     }
+
+
 }
 

@@ -20,12 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String player1Color, player2Color;
     String color;
     MediaPlayer sound;
-    Button blue;
-    Button orange;
-    Button red;
-    Button green;
-    Button yellow;
-    Button purple;
+    Button blue,orange,red,green, yellow,purple;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         sound = MediaPlayer.create(MainActivity.this, R.raw.odaberite_dvije_boje);
+        sound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                sound.release();
+            }
+        });
         sound.start();
     }
 
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        sound.stop();
         Button b = (Button)view;
         switch (b.getId()){
             case R.id.blue:
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("Player1", player1Color);
                     intent.putExtra("Player2", player2Color);
                     startActivity(intent);
+                    System.gc();
                     finish();
                 }
             });
